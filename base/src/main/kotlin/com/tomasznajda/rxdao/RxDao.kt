@@ -4,6 +4,12 @@ import com.tomasznajda.rxdao.entity.MappingRule
 
 object RxDao {
 
-    val errorHandler: (Throwable) -> Unit = { it.printStackTrace() }
-    val mappingRule = MappingRule.THROW
+    var errorHandler: (Throwable) -> Unit = { it.printStackTrace() }
+    var defaultMappingRule = MappingRule.THROW
+
+    fun setup(errorHandler: (Throwable) -> Unit = { it.printStackTrace() },
+              defaultMappingRule: MappingRule = MappingRule.THROW) {
+        this.errorHandler = errorHandler
+        this.defaultMappingRule = defaultMappingRule
+    }
 }
