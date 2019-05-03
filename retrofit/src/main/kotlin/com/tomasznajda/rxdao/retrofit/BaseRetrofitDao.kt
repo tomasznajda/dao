@@ -1,7 +1,7 @@
 package com.tomasznajda.rxdao.retrofit
 
-import com.tomasznajda.rxdao.RxDao
 import com.tomasznajda.rxdao.dao.BaseDao
+import com.tomasznajda.rxdao.entity.MappingRule
 import com.tomasznajda.rxdao.query.Action
 import com.tomasznajda.rxdao.query.Query
 import retrofit2.Retrofit
@@ -13,9 +13,9 @@ abstract class BaseRetrofitDao<EntityT : Any, ModelT : Any> : BaseDao<Retrofit, 
 
     override fun execute(action: Action<Retrofit>) = action.execute(retrofit)
 
-    override fun execute(query: Query<Retrofit, ModelT>) =
-            query.execute(retrofit).map {
-                if(RxDao.mappingRule.isThrow) mapper.toEntitiesOrThrow(it)
-                else mapper.toEntitiesOrSkip(it)
-            }!!
+    override fun execute(query: Query<Retrofit, ModelT>, mappingRule: MappingRule) =
+        query.execute(retrofit).map {
+            if (mappingRule.isThrow) mapper.toEntitiesOrThrow(it)
+            else mapper.toEntitiesOrSkip(it)
+        }!!
 }
